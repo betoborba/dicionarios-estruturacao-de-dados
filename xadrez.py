@@ -49,7 +49,7 @@ BLACK_SQUARE = '  '
 def print_chessboard(board):
     squares = []
     is_white_square = True # Valor Booleano controla quais casas são brancas e quais pretas 
-    for y in '87654321':    # Loop começando pela esquerda até a direita 
+    for y in '87654321':    # Loop começando pela esquerda até a direita in range 
         for x in 'abcdefgh': # Nesses dois loops as variáveis x e y assum os caract das strings 
             # Exibe (x, y, is_white_square) # Debug: Exibe as coordenadas
             if x + y in board.keys(): # Verifica se existe no dicionario
@@ -63,4 +63,42 @@ def print_chessboard(board):
             is_white_square = not is_white_square
 
     print(BOARD_TEMPLATE.format(*squares)) # Sintaxe do asterisco para passar os argumentos individual 
+
+print('Interactive Chessboard')
+print('by Me')
+print()
+print('Pieces:')
+print(' w - White, b - Black')
+print(' p - Pawn, N - Knight, B - Bishop, R - Rook, Q - Queen, K - King')
+print('Commands: ')
+print(' move e2 e4 - Moves the piece at e2 to e4')
+print(' remove e2 - Removes the piece at e2' )
+print(' set e2 wP - Sets squares e2 to a white pawn')
+print(' reset - Resets pieces back to their starting squares')
+print(' clear - Clears the entire board')
+print(' fill wp - Fills entire board white pawns.')
+print(' quit - Quits the program')
+
+
+main_board = copy.copy(STARTING_PIECES) # a variavel recebe uma copia do dicionário ...que tem todas as posições iniciais do jogo
+while True:    # A execuçao entre em um loop infinito permitindo o usuario digitar o comandos
+    print_chessboard(main_board)
+    response = input('> ').split()
+    if response[0] == 'move':  # copia a peça presente  na casa 1 para a copia da casa 2 
+        main_board[response[2]] = main_board[response[1]] 
+        del main_board[response[1]]
+    elif response[0] == 'remove':
+        del main_board[response[1]]
+    elif response[0] == 'set':
+        main_board[response[1]] = response[2]
+    elif response[0] == 'reset':
+        main_board = copy.copy(STARTING_PIECES)
+    elif response[0] == 'clear':
+        main_board = {} # atribui o valor vazio  a main_board
+    elif response[0] == 'fill':
+        for y in '87654321':
+            for x in 'abcdefgh':
+                main_board[x + y] = response[1]
+    elif response[0] == 'quit':
+      sys.exit()
 
